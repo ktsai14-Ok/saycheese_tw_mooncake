@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    
+    <title>Say Cheese | 中秋私房快閃・金沙月圓酥</title>
+    <meta name="description" content="不想有負擔的中秋，來隻小玉兔吧！綿密綠豆沙 ft. 微鹹金沙，媽媽純手工限量 30 盒快閃預購中。">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;600&display=swap');
+        
+        body {
+            font-family: 'Inter', 'Noto Serif TC', serif;
+            background-color: #0f172a; /* 深藍夜空底色 */
+            color: #f8fafc;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        .font-serif { font-family: 'Noto Serif TC', serif; }
+        .font-sans { font-family: 'Inter', sans-serif; }
+        
+        .text-moon-gold { color: #FBBF24; }
+        .bg-moon-gold { background-color: #FBBF24; }
+        .border-moon-gold { border-color: #FBBF24; }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* 下拉選單樣式 */
+        .select-arrow {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 1em;
+        }
+
+        /* 移除數字輸入框的上下箭頭 */
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden selection:bg-yellow-200 selection:text-slate-900">
+
+    <div class="w-full bg-amber-500 text-slate-900 py-2.5 px-4 text-center z-50 relative shadow-md">
+        <p class="text-[10px] md:text-xs tracking-[0.1em] font-sans font-bold flex items-center justify-center">
+            <span class="mr-2">🔥</span> 純手工製作，快閃限量 30 盒！滿單即刻提早收單
+        </p>
+    </div>
+
+    <nav class="w-full py-4 px-6 flex justify-between items-center bg-slate-900/90 backdrop-blur-md sticky top-0 z-40 border-b border-slate-800">
+        <a href="https://saycheese-tw.vercel.app/" class="text-[10px] md:text-xs font-sans font-bold tracking-widest text-slate-400 hover:text-white transition flex items-center">
+            ← 回常態蛋糕預購
+        </a>
+        <div class="text-sm font-serif font-bold tracking-widest text-moon-gold">Say Cheese 🌕</div>
+    </nav>
+
+    <header class="relative w-full h-[550px] md:h-[700px] flex flex-col items-center justify-center text-center px-4 overflow-hidden bg-[#050505]">
+
+        <!-- 全局電影感膠片噪點 (重現海報的粗糙顆粒感) -->
+        <div class="absolute inset-0 z-30 pointer-events-none opacity-[0.15] mix-blend-screen" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+
+        <!-- SVG 濾鏡定義區 (用來生成月球表面的不規則隕石坑紋理) -->
+        <svg width="0" height="0" class="hidden">
+            <filter id="moon-craters">
+                <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="5" result="noise" />
+                <feColorMatrix type="matrix" values="1 0 0 0 0, 0.7 0 0 0 0, 0 0 0 0 0, 0 0 0 1 0" in="noise" result="coloredNoise" />
+                <feBlend in="SourceGraphic" in2="coloredNoise" mode="multiply" />
+            </filter>
+        </svg>
+
+        <!-- 巨大紋理滿月 (偏右側，猶如海報構圖) -->
+        <div class="absolute top-[5%] md:top-[10%] right-[-20%] md:right-[-5%] w-[450px] h-[450px] md:w-[750px] md:h-[750px] rounded-full z-0 pointer-events-none"
+             style="background: radial-gradient(circle at 35% 35%, #ffdf40 0%, #ff8c00 35%, #e04000 65%, #631200 100%);
+                    box-shadow: 0 0 150px 40px rgba(255, 140, 0, 0.25), inset -20px -20px 60px rgba(0,0,0,0.6);">
+            <!-- 月球表面隕石坑疊加 -->
+            <div class="absolute inset-0 rounded-full opacity-[0.55] mix-blend-multiply" style="filter: url(#moon-craters);"></div>
+        </div>
+
+        <!-- 黑暗沙丘剪影 (利用 CSS 曲線切割，營造史詩感的前景遮擋) -->
+        <div class="absolute bottom-[-15%] left-[-20%] w-[140%] h-[35%] bg-[#0a0a0a] rounded-[100%] rotate-[-7deg] z-10" style="box-shadow: 0 -15px 40px rgba(0,0,0,0.9);"></div>
+        <div class="absolute bottom-[-20%] left-[-10%] w-[130%] h-[40%] bg-[#020202] rounded-[100%] rotate-[5deg] z-10"></div>
+
+        <!-- 文字內容區 (置於沙丘之上，擁有極強的對比度) -->
+        <div class="relative z-20 fade-in flex flex-col items-center mt-[-60px] md:mt-[-50px]">
+            <h2 class="font-sans font-bold text-[10px] md:text-xs text-amber-500 tracking-[0.4em] mb-8 md:mb-10 uppercase drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
+                Mid-Autumn Flash Sale
+            </h2>
+
+            <h1 class="text-5xl md:text-7xl font-serif tracking-[0.15em] mb-6 text-white leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] font-bold text-center">
+                金沙月圓酥
+                <span class="block text-lg md:text-2xl text-amber-100/90 mt-6 md:mt-8 font-light drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] tracking-[0.2em] md:tracking-widest">
+                    不想有負擔的中秋，來隻小玉兔吧 🐇
+                </span>
+            </h1>
+        </div>
+    </header>
+
+    <section class="py-12 px-6 relative z-10">
+        <div class="max-w-4xl mx-auto bg-slate-800/50 border border-slate-700 p-8 md:p-12 rounded-lg backdrop-blur-sm text-center shadow-2xl fade-in">
+            <p class="font-serif text-sm md:text-base text-slate-300 leading-loose tracking-widest mb-10 text-left md:text-center max-w-2xl mx-auto">
+                每年中秋都在煩惱大禮盒吃不完嗎？<br>
+                今年我們準備了這款沒有負擔的「金沙月圓酥」！<br><br>
+                <span class="text-moon-gold font-bold">綿密綠豆沙 ft. 微鹹金沙</span>，皮薄酥鬆，微甜不乾噎 💛<br><br>
+                剛剛好的 3 顆裝，配上超療癒的玉兔提盒。<br>
+                不管是下班帶回家配茶，或是帶去辦公室分享，還是拜拜，<br>
+                份量一切都剛、剛、好 ✨
+            </p>
+            
+            <!-- 實拍美照藝廊 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+                <div class="overflow-hidden rounded-md border border-slate-700/50 shadow-lg relative group bg-slate-900">
+                    <img src="./IMG_3941.jpg" alt="金沙月圓酥" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-700" onerror="this.src='https://placehold.co/400x400/1e293b/fbbf24?text=Mooncake+1'">
+                </div>
+                <div class="overflow-hidden rounded-md border border-slate-700/50 shadow-lg relative group bg-slate-900">
+                    <img src="./IMG_3920.jpg" alt="綿密綠豆沙金沙內餡" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-700" onerror="this.src='https://placehold.co/400x400/1e293b/fbbf24?text=Mooncake+2'">
+                </div>
+                <div class="overflow-hidden rounded-md border border-slate-700/50 shadow-lg relative group bg-slate-900">
+                    <img src="./IMG_3932.jpg" alt="超療癒玉兔提盒" class="w-full h-64 object-cover transform group-hover:scale-105 transition duration-700" onerror="this.src='https://placehold.co/400x400/1e293b/fbbf24?text=Rabbit+Box'">
+                </div>
+            </div>
+
+            <div class="inline-block bg-slate-900 border border-amber-500/30 rounded-md p-4 px-8">
+                <p class="font-sans font-bold text-amber-400 text-lg md:text-xl tracking-widest">玉兔輕盈價：NT$ 288 / 盒</p>
+                <p class="text-xs text-slate-400 mt-2 font-serif tracking-widest">（內含 3 顆金沙月圓酥 + 質感玉兔提盒）</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-12 px-4 md:px-12 max-w-3xl mx-auto fade-in">
+        <div class="bg-white text-slate-900 p-6 md:p-10 shadow-xl rounded-md border-t-4 border-moon-gold">
+            
+            <div class="text-center mb-8">
+                <h3 class="font-serif text-2xl md:text-3xl font-bold text-slate-800 tracking-widest mb-2">限量預購填單</h3>
+                <p class="text-xs md:text-sm text-slate-500 font-sans tracking-widest">請完成付款後再填寫表單，確保為您保留名額</p>
+            </div>
+
+            <div class="bg-slate-50 p-5 md:p-8 mb-8 border border-slate-200 rounded-md">
+                <h3 class="font-sans font-bold text-slate-800 tracking-widest mb-4 text-sm">付款資訊 (請於下單後24小時內完成)</h3>
+                
+                <div class="font-serif text-sm text-slate-700 tracking-wider space-y-4 bg-white p-5 rounded border border-slate-200">
+                    <div>
+                        <p class="font-bold text-slate-800 mb-1 border-b border-slate-100 pb-1">🏦 1. 銀行轉帳</p>
+                        <ul class="text-slate-600 mt-2 space-y-1">
+                            <li>銀行：國泰世華銀行 (013)</li>
+                            <li>帳號：<span class="font-sans font-bold text-amber-600 text-base ml-1">699523070332</span></li>
+                        </ul>
+                    </div>
+                    <div class="pt-2">
+                        <p class="font-bold text-slate-800 mb-1 border-b border-slate-100 pb-1">📱 2. Line Pay</p>
+                        <p class="text-slate-600 mt-2">搜尋 Line ID 加入好友：<span class="font-sans font-bold text-amber-600 text-base ml-1">@ktsai14</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <form id="orderForm" action="https://formspree.io/f/xnpqazvk" method="POST" class="space-y-8">
+                
+                <!-- 隱藏欄位：給 Formspree 紀錄 -->
+                <input type="hidden" name="訂單類型" value="【中秋快閃】金沙月圓酥">
+                <input type="hidden" name="訂購明細總結" id="fs-order-details" value="">
+                <input type="hidden" name="應付總金額" id="fs-total-price" value="">
+                
+                <div class="space-y-5">
+                    <h4 class="font-sans font-bold text-slate-800 tracking-widest border-b border-slate-200 pb-2 text-sm">顧客資料</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">姓名</label>
+                            <input type="text" name="顧客姓名" required class="w-full border-b border-slate-300 bg-transparent py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">電話</label>
+                            <input type="tel" name="聯絡電話" required class="w-full border-b border-slate-300 bg-transparent py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">電子信箱 (選填，寄送備份通知)</label>
+                            <input type="email" name="Email" class="w-full border-b border-slate-300 bg-transparent py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <h4 class="font-sans font-bold text-slate-800 tracking-widest border-b border-slate-200 pb-2 text-sm">訂購內容</h4>
+                    <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+                        <div class="text-sm font-bold text-slate-800">金沙月圓酥 (3入玉兔提盒)</div>
+                        <div class="flex items-center border border-slate-300 rounded bg-slate-50">
+                            <button type="button" class="px-3 py-1 text-slate-500 hover:text-black transition" onclick="updateQty(-1)">-</button>
+                            <input type="number" id="mooncake-qty" name="訂購數量" class="w-12 text-center bg-transparent text-sm font-bold border-x border-slate-300 py-1 pointer-events-none" value="1" min="1" readonly>
+                            <button type="button" class="px-3 py-1 text-slate-500 hover:text-black transition" onclick="updateQty(1)">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <h4 class="font-sans font-bold text-slate-800 tracking-widest border-b border-slate-200 pb-2 text-sm">配送與取貨資訊</h4>
+                    
+                    <div class="bg-amber-50 p-3 rounded border border-amber-200 mb-4">
+                        <p class="text-xs text-amber-800 font-serif tracking-wider leading-relaxed">
+                            📍 <strong>自取地點：</strong>江南咖啡<br>
+                            🚚 <strong>常溫宅配：</strong>單筆訂購 2 盒(含)以上即可選擇常溫宅配 (運費 NT$ 165)。
+                        </p>
+                    </div>
+
+                    <div class="mb-2">
+                        <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">配送方式</label>
+                        <select id="delivery-method" name="配送方式" required class="select-arrow w-full border-b border-slate-300 bg-slate-50 py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 font-serif">
+                            <option value="實體店自取">實體店自取 (江南咖啡)</option>
+                            <option value="常溫宅配">常溫宅配 (+ NT$ 165，限2盒以上)</option>
+                        </select>
+                        <p id="delivery-warning" class="text-xs text-red-500 font-serif mt-2 hidden">⚠️ 常溫宅配需訂購至少 2 盒，請增加數量或改為自取。</p>
+                    </div>
+
+                    <div id="address-container" class="mb-2 hidden">
+                        <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">宅配收件地址</label>
+                        <input type="text" id="delivery-address" name="宅配地址" class="w-full border-b border-slate-300 bg-transparent py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 transition" placeholder="請填寫完整收件地址（縣市/區/路/號/樓）">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">預定取貨 (或到貨) 日期</label>
+                            <select name="指定日期" required class="select-arrow w-full border-b border-slate-300 bg-slate-50 py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 font-serif">
+                                <option value="" disabled selected>請選擇開放日期...</option>
+                                <option value="2026-09-11 (週五)">2026/09/11 (週五)</option>
+                                <option value="2026-09-12 (週六)">2026/09/12 (週六)</option>
+                                <option value="2026-09-13 (週日)">2026/09/13 (週日)</option>
+                                <option value="2026-09-14 (週一)">2026/09/14 (週一)</option>
+                                <option value="2026-09-15 (週二)">2026/09/15 (週二)</option>
+                                <option value="2026-09-16 (週三)">2026/09/16 (週三)</option>
+                                <option value="2026-09-17 (週四)">2026/09/17 (週四)</option>
+                                <option value="2026-09-18 (週五)">2026/09/18 (週五)</option>
+                                <option value="2026-09-19 (週六)">2026/09/19 (週六)</option>
+                                <option value="2026-09-20 (週日)">2026/09/20 (週日)</option>
+                                <option value="2026-09-21 (週一)">2026/09/21 (週一)</option>
+                                <option value="2026-09-22 (週二)">2026/09/22 (週二)</option>
+                                <option value="2026-09-23 (週三)">2026/09/23 (週三)</option>
+                                <option value="2026-09-24 (週四)">2026/09/24 (週四)</option>
+                                <option value="2026-09-25 (週五)">2026/09/25 (週五)</option>
+                            </select>
+                        </div>
+                        <div id="pickup-time-container">
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">自取時段</label>
+                            <select name="自取時間" required class="select-arrow w-full border-b border-slate-300 bg-slate-50 py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 font-serif">
+                                <option value="" disabled selected>請選擇時段...</option>
+                                <option value="11:00 - 12:00">11:00 - 12:00</option>
+                                <option value="12:00 - 13:00">12:00 - 13:00</option>
+                                <option value="13:00 - 14:00">13:00 - 14:00</option>
+                                <option value="14:00 - 15:00">14:00 - 15:00</option>
+                                <option value="15:00 - 16:00">15:00 - 16:00</option>
+                                <option value="16:00 - 17:00">16:00 - 17:00</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-5">
+                    <h4 class="font-sans font-bold text-slate-800 tracking-widest border-b border-slate-200 pb-2 text-sm">款項確認</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">付款方式</label>
+                            <select name="付款方式" required class="select-arrow w-full border-b border-slate-300 bg-slate-50 py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500">
+                                <option value="" disabled selected>請選擇...</option>
+                                <option value="銀行轉帳">銀行轉帳</option>
+                                <option value="Line Pay">Line Pay</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 tracking-wider mb-2">帳號末五碼 / Line 名稱</label>
+                            <input type="text" name="對帳末五碼" required placeholder="例如：12345" class="w-full border-b border-slate-300 bg-transparent py-2 text-sm text-slate-800 focus:outline-none focus:border-amber-500 transition">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 總金額顯示區 -->
+                <div class="bg-amber-100/50 p-4 rounded border border-amber-200 flex justify-between items-center">
+                    <span class="text-sm font-bold text-slate-700">應付總額</span>
+                    <span class="text-xl font-bold text-amber-600">NT$ <span id="total-price-display">288</span></span>
+                </div>
+
+                <div class="bg-slate-50 p-4 border border-slate-200 rounded-md mt-6">
+                    <label class="flex items-start cursor-pointer group">
+                        <div class="flex-shrink-0 mt-0.5 mr-3">
+                            <input type="checkbox" required class="w-4 h-4 text-amber-500 border-slate-300 rounded focus:ring-amber-500">
+                        </div>
+                        <div class="text-xs text-slate-600 font-serif leading-relaxed">
+                            <span class="font-bold text-slate-800 mb-1 block">【私房小叮嚀】我已充分了解並同意：</span>
+                            因為純手工限量製作，材料備得剛剛好～ <br>
+                            送出表單後，<span class="text-red-500 font-bold">請務必於 24 小時內完成結帳</span>，讓我們能安心為您保留這份秋日心意。<br>
+                            （若超時未結，名額就會先讓給排隊候補的朋友喔，感謝體諒 💛）
+                        </div>
+                    </label>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-moon-gold text-slate-900 font-bold tracking-widest uppercase py-4 rounded hover:bg-yellow-500 transition duration-300 text-sm md:text-base mt-4 shadow-lg shadow-amber-500/30">
+                    確認送出訂單
+                </button>
+            </form>
+        </div>
+    </section>
+
+    <footer class="border-t border-slate-800 py-10 text-center relative z-10">
+        <p class="text-[10px] md:text-xs text-slate-500 tracking-widest font-sans">&copy; 2026 Say Cheese. All rights reserved.</p>
+    </footer>
+
+    <!-- 錯誤通知 -->
+    <div id="toast" class="fixed bottom-5 left-4 right-4 md:left-auto md:right-10 md:bottom-10 bg-red-600 text-white px-5 py-4 rounded shadow-2xl transform translate-y-[150%] opacity-0 transition-all duration-500 z-[100]">
+        <p class="text-xs md:text-sm tracking-wider font-serif text-center md:text-left"><span id="toast-message">系統訊息</span></p>
+    </div>
+
+    <!-- 成功視窗 -->
+    <div id="success-modal" class="fixed inset-0 z-[100] hidden items-center justify-center bg-slate-900/80 backdrop-blur-sm p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-lg shadow-2xl max-w-sm w-full p-6 md:p-8 transform scale-95 transition-transform duration-300 text-slate-800">
+            <div class="text-center">
+                <div class="text-4xl mb-2">🐇</div>
+                <h3 class="text-xl font-sans font-bold text-slate-800 mb-1 tracking-widest">Order Confirmed</h3>
+                <h4 class="font-serif text-amber-600 font-bold mb-4 text-sm">小玉兔為您保留成功！</h4>
+                
+                <p class="text-xs text-slate-500 font-serif leading-relaxed mb-6 bg-slate-50 p-2 rounded border border-slate-200">
+                    💡 請「截圖保存」此畫面，並於 24 小時內完成匯款喔！
+                </p>
+                
+                <div class="bg-slate-50 border border-slate-200 rounded p-4 text-left font-serif text-sm space-y-3 mb-6">
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <span class="text-slate-500">姓名</span>
+                        <span id="modal-name" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <span class="text-slate-500">取/送日期</span>
+                        <span id="modal-date" class="font-bold text-xs"></span>
+                    </div>
+                    <div id="modal-pickup-time-row" class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <span class="text-slate-500">自取時間</span>
+                        <span id="modal-time" class="font-bold"></span>
+                    </div>
+                    <div id="modal-address-row" class="hidden justify-between items-start border-b border-slate-200 pb-2">
+                        <span class="text-slate-500 whitespace-nowrap mr-4">宅配地址</span>
+                        <span id="modal-address" class="font-bold text-right text-xs"></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <span class="text-slate-500">購買品項</span>
+                        <span class="font-bold text-amber-600 text-right text-xs max-w-[150px]"><span id="modal-details"></span></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <span class="text-slate-500">付款方式</span>
+                        <span id="modal-payment-method" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between items-center border-b border-slate-200 pb-2">
+                        <span class="text-slate-500">末五碼</span>
+                        <span id="modal-ref" class="font-bold"></span>
+                    </div>
+                    <div class="flex justify-between items-center pt-1">
+                        <span class="text-slate-500">應付總金額</span>
+                        <span id="modal-price" class="font-sans font-bold text-amber-600 text-lg"></span>
+                    </div>
+                </div>
+
+                <a href="https://saycheese-tw.vercel.app/" class="block w-full bg-slate-800 text-white font-bold tracking-widest uppercase py-3 hover:bg-slate-700 transition duration-300 text-sm rounded text-center">
+                    回首頁繼續逛逛
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const pricePerBox = 288;
+
+        // 頁面滾動特效
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('appear');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.fade-in').forEach((el) => observer.observe(el));
+
+        function updateQty(change) {
+            const input = document.getElementById('mooncake-qty');
+            let newQty = parseInt(input.value) + change;
+            if (newQty < 1) newQty = 1;
+            input.value = newQty;
+            calculateTotal();
+        }
+
+        function calculateTotal() {
+            const qty = parseInt(document.getElementById('mooncake-qty').value);
+            const deliveryMethod = document.getElementById('delivery-method') ? document.getElementById('delivery-method').value : '實體店自取';
+            const submitBtn = document.getElementById('submit-btn');
+            const deliveryWarning = document.getElementById('delivery-warning');
+            
+            let total = qty * pricePerBox;
+            let details = `金沙月圓酥(3入玉兔盒) × ${qty} 盒`;
+            
+            if (deliveryMethod === '常溫宅配') {
+                total += 165;
+                details += ' ｜ 常溫宅配 (運費165)';
+                
+                if (qty < 2) {
+                    if (deliveryWarning) deliveryWarning.classList.remove('hidden');
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+                    }
+                } else {
+                    if (deliveryWarning) deliveryWarning.classList.add('hidden');
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                    }
+                }
+            } else {
+                if (deliveryWarning) deliveryWarning.classList.add('hidden');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
+            }
+            
+            document.getElementById('total-price-display').innerText = total;
+            
+            // 寫入給 Formspree 的隱藏欄位
+            document.getElementById('fs-order-details').value = details;
+            document.getElementById('fs-total-price').value = `NT$ ${total}`;
+        }
+
+        // 初始化金額
+        calculateTotal();
+
+        // 監聽配送方式切換
+        const deliveryMethodSelect = document.getElementById('delivery-method');
+        if (deliveryMethodSelect) {
+            deliveryMethodSelect.addEventListener('change', function() {
+                const method = this.value;
+                const addressContainer = document.getElementById('address-container');
+                const addressInput = document.getElementById('delivery-address');
+                const pickupTimeContainer = document.getElementById('pickup-time-container');
+                const pickupTimeInput = document.querySelector('[name="自取時間"]');
+
+                if (method === '常溫宅配') {
+                    addressContainer.classList.remove('hidden');
+                    addressInput.required = true;
+                    pickupTimeContainer.classList.add('hidden');
+                    pickupTimeInput.required = false;
+                    pickupTimeInput.value = '';
+                } else {
+                    addressContainer.classList.add('hidden');
+                    addressInput.required = false;
+                    addressInput.value = '';
+                    pickupTimeContainer.classList.remove('hidden');
+                    pickupTimeInput.required = true;
+                }
+                calculateTotal();
+            });
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('translate-y-[150%]', 'opacity-0');
+            setTimeout(() => toast.classList.add('translate-y-[150%]', 'opacity-0'), 4000); 
+        }
+
+        document.getElementById('orderForm').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            calculateTotal(); // 再次確保數值正確
+
+            const form = e.target;
+            const btn = document.getElementById('submit-btn');
+            
+            btn.disabled = true;
+            btn.textContent = '傳送中...';
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+
+            fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                if (response.ok) {
+                    // 填寫成功視窗資料
+                    document.getElementById('modal-name').innerText = form.querySelector('[name="顧客姓名"]').value;
+                    document.getElementById('modal-date').innerText = form.querySelector('[name="指定日期"]').value;
+                    
+                    const deliveryMethod = form.querySelector('[name="配送方式"]').value;
+                    if (deliveryMethod === '常溫宅配') {
+                        document.getElementById('modal-address').innerText = form.querySelector('[name="宅配地址"]').value;
+                        document.getElementById('modal-address-row').classList.remove('hidden');
+                        document.getElementById('modal-address-row').classList.add('flex');
+                        document.getElementById('modal-pickup-time-row').classList.add('hidden');
+                        document.getElementById('modal-pickup-time-row').classList.remove('flex');
+                    } else {
+                        document.getElementById('modal-time').innerText = form.querySelector('[name="自取時間"]').value;
+                        document.getElementById('modal-pickup-time-row').classList.remove('hidden');
+                        document.getElementById('modal-pickup-time-row').classList.add('flex');
+                        document.getElementById('modal-address-row').classList.add('hidden');
+                        document.getElementById('modal-address-row').classList.remove('flex');
+                    }
+                    
+                    document.getElementById('modal-details').innerText = document.getElementById('fs-order-details').value;
+                    document.getElementById('modal-payment-method').innerText = form.querySelector('[name="付款方式"]').value;
+                    document.getElementById('modal-ref').innerText = form.querySelector('[name="對帳末五碼"]').value;
+                    document.getElementById('modal-price').innerText = document.getElementById('fs-total-price').value;
+                    
+                    // 顯示視窗
+                    const modal = document.getElementById('success-modal');
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    setTimeout(() => {
+                        modal.classList.add('opacity-100');
+                        modal.children[0].classList.add('scale-100');
+                    }, 10);
+                } else {
+                    showToast('⚠️ 網路錯誤或表單異常，請稍後再試！');
+                }
+            }).catch(error => {
+                showToast(`⚠️ 無法連線，請確認網路狀態。`);
+            }).finally(() => {
+                btn.disabled = false;
+                btn.textContent = '確認送出訂單';
+                btn.classList.remove('opacity-70', 'cursor-not-allowed');
+            });
+        });
+    </script>
+</body>
+</html>
